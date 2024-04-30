@@ -32,11 +32,13 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
       if (_formKey.currentState!.validate()) {
         // 저장된 값마다 함수 돌릴 수 있음
         _formKey.currentState!.save();
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const InterestsScreen(),
-          ),
-        );
+        // pushAndRemoveUntil: 새로운 화면을 push하고 이전 화면들은 제거. 화면수 선택도 가능
+        // return false => 이전 화면 삭제 true => 유지
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const InterestsScreen(),
+            ),
+            (route) => false);
       }
     }
   }
