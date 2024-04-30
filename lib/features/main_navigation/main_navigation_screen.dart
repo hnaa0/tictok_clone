@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/sizes.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -39,25 +40,30 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: screens[_selectedIdx],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType
-            .shifting, // shifting으로 설정 시 items.length < 4여도 backgroundColor 활성화 됨.
-        onTap: _onTap,
-        currentIndex: _selectedIdx,
-        // selectedItemColor: Theme.of(context).primaryColor,
-        items: [
-          BottomNavigationBarItem(
-            icon: const FaIcon(FontAwesomeIcons.house),
+      bottomNavigationBar: NavigationBar(
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+        onDestinationSelected: _onTap,
+        selectedIndex: _selectedIdx,
+        destinations: [
+          NavigationDestination(
+            icon: FaIcon(
+              FontAwesomeIcons.house,
+              color: _selectedIdx == 0
+                  ? Theme.of(context).primaryColor
+                  : Colors.grey.shade500,
+              size: Sizes.size16,
+            ),
             label: "Home",
-            tooltip: "What are you?",
-            backgroundColor: Colors.lightGreen
-                .shade200, // backgroundColor: items.length > 3일 때 활성화 됨.
           ),
-          BottomNavigationBarItem(
-            icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
-            label: "Searh",
-            tooltip: "What are you?",
-            backgroundColor: Colors.lime.shade200,
+          NavigationDestination(
+            icon: FaIcon(
+              FontAwesomeIcons.magnifyingGlass,
+              color: _selectedIdx == 1
+                  ? Theme.of(context).primaryColor
+                  : Colors.grey.shade500,
+              size: Sizes.size16,
+            ),
+            label: "Search",
           ),
         ],
       ),
