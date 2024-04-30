@@ -70,8 +70,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
               crossFadeState: _showingPage == Page.first
                   ? CrossFadeState.showFirst
                   : CrossFadeState.showSecond,
-              firstChild: const Page_1(),
-              secondChild: const Page_2(),
+              firstChild: const Page1(),
+              secondChild: const Page2(),
             ),
           ),
         ),
@@ -99,8 +99,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
   }
 }
 
-class Page_2 extends StatelessWidget {
-  const Page_2({
+class Page2 extends StatelessWidget {
+  const Page2({
     super.key,
   });
 
@@ -130,8 +130,8 @@ class Page_2 extends StatelessWidget {
   }
 }
 
-class Page_1 extends StatelessWidget {
-  const Page_1({
+class Page1 extends StatelessWidget {
+  const Page1({
     super.key,
   });
 
