@@ -29,10 +29,15 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   }
 
   void _onVideoFinished() {
-    _pageController.nextPage(
-      duration: _scrollDuration,
-      curve: _scrollCurve,
-    );
+    return;
+    // _pageController.nextPage(
+    //   duration: _scrollDuration,
+    //   curve: _scrollCurve,
+    // );
+  }
+
+  Future<void> _onRefresh() {
+    return Future.delayed(const Duration(seconds: 5));
   }
 
   @override
@@ -44,15 +49,21 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   @override
   Widget build(BuildContext context) {
     // PageView.builder: ListView.builder와 유사
-    return PageView.builder(
-      controller: _pageController,
-      scrollDirection: Axis.vertical, // 스크롤 방향 지정
-      onPageChanged: _onPageChanged, // 유저가 이동할 때 도착하는 페이지에 대한 정보를 주는 메서드
-      itemCount: _itemCount,
-      pageSnapping: true, // 스크롤 위치를 사용자지정으로 할 수 있음
-      itemBuilder: (context, index) => VideoPost(
-        index: index,
-        onVideoFinished: _onVideoFinished,
+    return RefreshIndicator(
+      displacement: 50, // displacement: 화면을 당긴 다음 indicator의 위치
+      edgeOffset: 20, // edgeOffset: indicator가 시작할 위치
+      color: Theme.of(context).primaryColor,
+      onRefresh: _onRefresh,
+      child: PageView.builder(
+        controller: _pageController,
+        scrollDirection: Axis.vertical, // 스크롤 방향 지정
+        onPageChanged: _onPageChanged, // 유저가 이동할 때 도착하는 페이지에 대한 정보를 주는 메서드
+        itemCount: _itemCount,
+        pageSnapping: true, // 스크롤 위치를 사용자지정으로 할 수 있음
+        itemBuilder: (context, index) => VideoPost(
+          index: index,
+          onVideoFinished: _onVideoFinished,
+        ),
       ),
     );
   }

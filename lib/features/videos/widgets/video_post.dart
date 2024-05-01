@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
+// SingleTickerProviderStateMixin: current tree가 활성화된 동안만(= 위젯이 화면에 보일 때만) tick하는 단일 ticker 제공
+// ticker?: 일종의 시계. 애니메이션의 프레임마다 callback 실행.
+// vsync?: offscreen 애니메이션의 불필요한 리소스 사용을 막음 = 위젯이 위젯 tree에 있을 때만 ticker 유지하게 해줌.(= 위젯이 안 보일 땐 애니메이션 정지)
+
+// 애니메이션이 ticker 겟 -> 애니메이션이 재생될 때 ticker가 매 프레임마다 애니메이션에게 알려줌.
 
 class VideoPost extends StatefulWidget {
   const VideoPost({
@@ -27,6 +35,7 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPaused = false;
+  bool _isMoreShowed = false;
 
   final Duration _animationDuration = const Duration(milliseconds: 300);
 
@@ -41,6 +50,7 @@ class _VideoPostState extends State<VideoPost>
 
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
+    await _videoPlayerController.setLooping(true);
     setState(() {
       _videoPlayerController.addListener(_onVideoChange);
     });
@@ -51,7 +61,7 @@ class _VideoPostState extends State<VideoPost>
     super.initState();
     _initVideoPlayer();
     _animationController = AnimationController(
-      vsync: this,
+      vsync: this, // this= 지금 이 클래스(+ ticker를 포함한 SingleTicker이기도 한)
       value: 1.5,
       lowerBound: 1.0,
       upperBound: 1.5,
@@ -83,6 +93,20 @@ class _VideoPostState extends State<VideoPost>
     setState(() {
       _isPaused = !_isPaused;
     });
+  }
+
+  void _onTapSeeMore() {
+    setState(() {
+      _isMoreShowed = true;
+    });
+  }
+
+  void _onTapSeeLess() {
+    if (_isMoreShowed) {
+      setState(() {
+        _isMoreShowed = false;
+      });
+    }
   }
 
   @override
@@ -130,6 +154,93 @@ class _VideoPostState extends State<VideoPost>
               ),
             ),
           ),
+          Positioned(
+            bottom: 20,
+            left: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "@gnar",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: Sizes.size20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Gaps.v10,
+                Row(
+                  children: [
+                    SizedBox(
+                      width: _isMoreShowed ? 300 : 200,
+                      child: GestureDetector(
+                        onTap: _onTapSeeLess,
+                        child: AnimatedOpacity(
+                          duration: const Duration(milliseconds: 100),
+                          opacity: 1,
+                          child: Text(
+                            "gnar goyangi gooroonggooroong laundry babo goyangi gnar goyangi gooroonggooroong laundry babo goyangi",
+                            overflow: _isMoreShowed
+                                ? TextOverflow.visible
+                                : TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: Sizes.size16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Gaps.h4,
+                    GestureDetector(
+                      onTap: _onTapSeeMore,
+                      child: AnimatedOpacity(
+                        duration: const Duration(seconds: 0),
+                        opacity: _isMoreShowed ? 0 : 1,
+                        child: const Text(
+                          "See more",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: Sizes.size16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const Positioned(
+            bottom: 20,
+            right: 10,
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.lime,
+                  foregroundColor: Colors.white,
+                  foregroundImage: AssetImage("assets/images/gnarphoto.jpg"),
+                  child: Text("GNAR"),
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidHeart,
+                  text: "2.9M",
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidComment,
+                  text: "33.0K",
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.share,
+                  text: "Share",
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
