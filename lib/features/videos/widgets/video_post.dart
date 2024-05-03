@@ -82,9 +82,16 @@ class _VideoPostState extends State<VideoPost>
         !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
+
+    // 다른 탭으로 넘어갔을 때 동영상 정지
+    if (_videoPlayerController.value.isPlaying && info.visibleFraction < 1) {
+      _onTogglePause();
+    }
   }
 
   void _onTogglePause() {
+    // 이미 dispose된 controller에 접근하지 않도록 mount되지 않았다면 리턴
+    if (!mounted) return;
     if (_videoPlayerController.value.isPlaying) {
       _videoPlayerController.pause();
       _animationController.reverse();
@@ -236,7 +243,7 @@ class _VideoPostState extends State<VideoPost>
                   radius: 25,
                   backgroundColor: Colors.lime,
                   foregroundColor: Colors.white,
-                  foregroundImage: AssetImage("assets/images/gnarphoto.jpg"),
+                  foregroundImage: AssetImage("assets/images/gnarprofile.jpg"),
                   child: Text("GNAR"),
                 ),
                 Gaps.v24,

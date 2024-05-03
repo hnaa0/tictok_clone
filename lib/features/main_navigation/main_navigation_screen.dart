@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/discover/discover_screen.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/nav_tab.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/post_video_button.dart';
 import 'package:tiktok_clone/features/videos/video_timeline_screen.dart';
@@ -14,7 +15,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIdx = 0;
+  int _selectedIdx = 1;
   bool _isTapDown = false;
 
   final screens = [
@@ -79,7 +80,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ),
           Offstage(
             offstage: _selectedIdx != 1,
-            child: Container(),
+            child: const DiscoverScreen(),
           ),
           Offstage(
             offstage: _selectedIdx != 3,
@@ -92,7 +93,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.black,
+        color: _selectedIdx == 0 ? Colors.black : Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(
             Sizes.size12,
@@ -106,6 +107,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 selectedIcon: FontAwesomeIcons.houseChimney,
                 isSelected: _selectedIdx == 0 ? true : false,
                 onTap: () => _onTap(0),
+                selectedIdx: _selectedIdx,
               ),
               NavTab(
                 text: "Discover",
@@ -113,6 +115,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 selectedIcon: FontAwesomeIcons.solidCompass,
                 isSelected: _selectedIdx == 1 ? true : false,
                 onTap: () => _onTap(1),
+                selectedIdx: _selectedIdx,
               ),
               Gaps.h24,
               GestureDetector(
@@ -122,7 +125,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 onLongPressEnd: (details) {
                   _onLongPressEndPostviedoButton();
                 },
-                child: PostVideoButton(isTapDown: _isTapDown),
+                child: PostVideoButton(
+                    isTapDown: _isTapDown, inverted: _selectedIdx != 0),
               ),
               Gaps.h24,
               NavTab(
@@ -131,6 +135,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 selectedIcon: FontAwesomeIcons.solidMessage,
                 isSelected: _selectedIdx == 3 ? true : false,
                 onTap: () => _onTap(3),
+                selectedIdx: _selectedIdx,
               ),
               NavTab(
                 text: "Profile",
@@ -138,6 +143,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 selectedIcon: FontAwesomeIcons.solidUser,
                 isSelected: _selectedIdx == 4 ? true : false,
                 onTap: () => _onTap(4),
+                selectedIdx: _selectedIdx,
               ),
             ],
           ),

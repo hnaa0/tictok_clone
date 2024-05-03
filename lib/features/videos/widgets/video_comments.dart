@@ -156,58 +156,59 @@ class _VideoCommentsState extends State<VideoComments> {
                               textInputAction: TextInputAction.newline,
                               cursorColor: Theme.of(context).primaryColor,
                               decoration: InputDecoration(
-                                  hintText: "Write a comment...",
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                      Sizes.size12,
-                                    ),
-                                    borderSide: BorderSide.none,
+                                hintText: "Write a comment...",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    Sizes.size12,
                                   ),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: Sizes.size10,
-                                    vertical: Sizes.size12,
+                                  borderSide: BorderSide.none,
+                                ),
+                                filled: true,
+                                fillColor: Colors.grey.shade200,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: Sizes.size10,
+                                  vertical: Sizes.size12,
+                                ),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: Sizes.size14,
                                   ),
-                                  suffixIcon: Padding(
-                                    padding: const EdgeInsets.only(
-                                      right: Sizes.size14,
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Gaps.h12,
-                                        FaIcon(
-                                          FontAwesomeIcons.at,
-                                          color: Colors.grey.shade800,
-                                          size: Sizes.size20 + Sizes.size2,
-                                        ),
-                                        Gaps.h12,
-                                        FaIcon(
-                                          FontAwesomeIcons.gift,
-                                          color: Colors.grey.shade800,
-                                          size: Sizes.size20 + Sizes.size2,
-                                        ),
-                                        Gaps.h12,
-                                        FaIcon(
-                                          FontAwesomeIcons.faceSmile,
-                                          color: Colors.grey.shade800,
-                                          size: Sizes.size20 + Sizes.size2,
-                                        ),
-                                        Gaps.h12,
-                                        if (_isWriting)
-                                          GestureDetector(
-                                            onTap: _stopWriting,
-                                            child: FaIcon(
-                                              FontAwesomeIcons.arrowUp,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              size: Sizes.size20 + Sizes.size2,
-                                            ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Gaps.h12,
+                                      FaIcon(
+                                        FontAwesomeIcons.at,
+                                        color: Colors.grey.shade800,
+                                        size: Sizes.size20 + Sizes.size2,
+                                      ),
+                                      Gaps.h12,
+                                      FaIcon(
+                                        FontAwesomeIcons.gift,
+                                        color: Colors.grey.shade800,
+                                        size: Sizes.size20 + Sizes.size2,
+                                      ),
+                                      Gaps.h12,
+                                      FaIcon(
+                                        FontAwesomeIcons.faceSmile,
+                                        color: Colors.grey.shade800,
+                                        size: Sizes.size20 + Sizes.size2,
+                                      ),
+                                      Gaps.h12,
+                                      if (_isWriting)
+                                        GestureDetector(
+                                          onTap: _stopWriting,
+                                          child: FaIcon(
+                                            FontAwesomeIcons.arrowUp,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            size: Sizes.size20 + Sizes.size2,
                                           ),
-                                      ],
-                                    ),
-                                  )),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
