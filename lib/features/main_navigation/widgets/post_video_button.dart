@@ -69,7 +69,7 @@ class _PostVideoButtonState extends State<PostVideoButton> {
               child: FaIcon(
                 FontAwesomeIcons.plus,
                 color: !widget.inverted ? Colors.black : Colors.white,
-                size: Sizes.size16 + Sizes.size2,
+                size: Sizes.size18,
               ),
             ),
           )
