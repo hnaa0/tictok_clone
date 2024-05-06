@@ -13,6 +13,25 @@ class ChatDetailScreen extends StatefulWidget {
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
   final TextEditingController _editingController = TextEditingController();
 
+  final List<Map<String, dynamic>> _chats = [
+    {
+      "mine": false,
+      "text": "hey",
+    },
+    {
+      "mine": false,
+      "text": "love ur video!",
+    },
+    {
+      "mine": true,
+      "text": "❤❤❤❤❤",
+    },
+    {
+      "mine": true,
+      "text": "😘😘😘",
+    },
+  ];
+
   void _onScaffoldTap() {
     FocusScope.of(context).unfocus();
   }
@@ -28,11 +47,18 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   void _onSubmitChat() {
     if (_isWriting) {
       setState(() {
+        _chats.add({"mine": true, "text": _editingController.text});
         _editingController.clear();
         _isWriting = false;
       });
       _onScaffoldTap();
     }
+  }
+
+  @override
+  void dispose() {
+    _editingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -103,30 +129,32 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 horizontal: Sizes.size14,
               ),
               itemBuilder: (context, index) {
-                final isMine = index % 2 == 0;
+                final chat = _chats[index];
+
                 return Row(
                   mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment:
-                      isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
+                  mainAxisAlignment: chat["mine"]
+                      ? MainAxisAlignment.end
+                      : MainAxisAlignment.start,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(Sizes.size14),
                       decoration: BoxDecoration(
-                        color: isMine
+                        color: chat["mine"]
                             ? Colors.lime
                             : Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.only(
                           topLeft: const Radius.circular(Sizes.size20),
                           topRight: const Radius.circular(Sizes.size20),
                           bottomLeft: Radius.circular(
-                              isMine ? Sizes.size20 : Sizes.size5),
+                              chat["mine"] ? Sizes.size20 : Sizes.size5),
                           bottomRight: Radius.circular(
-                              !isMine ? Sizes.size20 : Sizes.size5),
+                              !chat["mine"] ? Sizes.size20 : Sizes.size5),
                         ),
                       ),
-                      child: const Text(
-                        "this is a message!",
-                        style: TextStyle(
+                      child: Text(
+                        chat["text"],
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: Sizes.size16,
                         ),
@@ -136,7 +164,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 );
               },
               separatorBuilder: (context, index) => Gaps.v10,
-              itemCount: 10,
+              itemCount: _chats.length,
             ),
             Positioned(
               bottom: 0,
