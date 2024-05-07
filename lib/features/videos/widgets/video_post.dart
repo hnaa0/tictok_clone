@@ -73,10 +73,12 @@ class _VideoPostState extends State<VideoPost>
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
+    if (!mounted) return;
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
@@ -184,7 +186,7 @@ class _VideoPostState extends State<VideoPost>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "@gnar",
+                  "@gnarthecat",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: Sizes.size20,
