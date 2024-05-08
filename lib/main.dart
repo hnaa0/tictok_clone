@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 // import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
-// import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized(); // bind, widget, engine 초기화-연결
+
+  // await SystemChrome.setPreferredOrientations(
+  //   [
+  //     DeviceOrientation.portraitUp,
+  //   ],
+  // );
+
+  // // main 말고도 원하는 화면에서 사용 가능
+  // SystemChrome.setSystemUIOverlayStyle(
+  //   SystemUiOverlayStyle.dark,
+  // );
+
   runApp(const TiktokApp());
 }
 
@@ -14,6 +27,7 @@ class TiktokApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Tiktok Clone',
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,

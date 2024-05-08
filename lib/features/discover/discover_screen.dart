@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
@@ -58,6 +59,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
@@ -69,75 +71,82 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
           //   onChanged: _onSearhChanged,
           //   onSubmitted: _onSubmitted,
           // ),
-          title: Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: Sizes.size36,
-                  child: TextField(
-                    controller: _textEditingController,
-                    onChanged: _onWritingTextField,
-                    textAlignVertical: TextAlignVertical.center,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: Sizes.size8,
-                        vertical: Sizes.size6,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey.shade200,
-                      border: const OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon: const Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: Sizes.size14,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            // Gaps.h12,
-                            FaIcon(
-                              FontAwesomeIcons.magnifyingGlass,
-                              color: Colors.black,
-                              size: Sizes.size20,
+          title: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: Breakpoints.sm,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: Sizes.size36,
+                      child: TextField(
+                        controller: _textEditingController,
+                        onChanged: _onWritingTextField,
+                        textAlignVertical: TextAlignVertical.center,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: Sizes.size8,
+                            vertical: Sizes.size6,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          prefixIcon: const Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: Sizes.size14,
                             ),
-                          ],
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // Gaps.h12,
+                                FaIcon(
+                                  FontAwesomeIcons.magnifyingGlass,
+                                  color: Colors.black,
+                                  size: Sizes.size20,
+                                ),
+                              ],
+                            ),
+                          ),
+                          suffixIcon: _isWriting
+                              ? GestureDetector(
+                                  onTap: _onClearTextFieldTap,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: Sizes.size14,
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.circleXmark,
+                                          color: Colors.grey.shade700,
+                                          size: Sizes.size20,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : null,
                         ),
                       ),
-                      suffixIcon: _isWriting
-                          ? GestureDetector(
-                              onTap: _onClearTextFieldTap,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: Sizes.size14,
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    FaIcon(
-                                      FontAwesomeIcons.circleXmark,
-                                      color: Colors.grey.shade700,
-                                      size: Sizes.size20,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          : null,
                     ),
                   ),
-                ),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      left: Sizes.size16,
+                    ),
+                    child: FaIcon(
+                      FontAwesomeIcons.filter,
+                      size: Sizes.size20 + Sizes.size2,
+                    ),
+                  ),
+                ],
               ),
-              const Padding(
-                padding: EdgeInsets.only(
-                  left: Sizes.size16,
-                ),
-                child: FaIcon(
-                  FontAwesomeIcons.filter,
-                  size: Sizes.size20 + Sizes.size2,
-                ),
-              ),
-            ],
+            ),
           ),
 
           // PreferredSizeWidget: 특정 사이즈를 가지려고 하지만 자식 위젯 사이즈를 제한하진 않음
@@ -170,77 +179,81 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                 Sizes.size6,
               ),
               itemCount: 20,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: width > Breakpoints.lg ? 5 : 2,
                 crossAxisSpacing: Sizes.size10,
                 mainAxisSpacing: Sizes.size12,
                 childAspectRatio: 9 / 20,
               ),
-              itemBuilder: (context, index) => Column(
-                children: [
-                  Container(
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Sizes.size4),
+              itemBuilder: (context, index) => LayoutBuilder(
+                builder: (context, constraints) => Column(
+                  children: [
+                    Container(
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(Sizes.size4),
+                      ),
+                      child: AspectRatio(
+                        aspectRatio: 9 / 16,
+                        child: FadeInImage.assetNetwork(
+                            fit: BoxFit.cover,
+                            placeholderFit: BoxFit.cover,
+                            placeholder: "assets/images/discover_1.jpg",
+                            image:
+                                "https://images.pexels.com/photos/23221815/pexels-photo-23221815.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
+                      ),
                     ),
-                    child: AspectRatio(
-                      aspectRatio: 9 / 16,
-                      child: FadeInImage.assetNetwork(
-                          fit: BoxFit.cover,
-                          placeholderFit: BoxFit.cover,
-                          placeholder: "assets/images/discover_1.jpg",
-                          image:
-                              "https://images.pexels.com/photos/23221815/pexels-photo-23221815.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
+                    Gaps.v10,
+                    Text(
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      "${constraints.maxWidth} is very long long caption flutter so good amazing wowwow",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: Sizes.size16,
+                      ),
                     ),
-                  ),
-                  Gaps.v10,
-                  const Text(
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    "This is very long long caption flutter so good amazing wowwow",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: Sizes.size16,
-                    ),
-                  ),
-                  Gaps.v5,
-                  DefaultTextStyle(
-                    style: TextStyle(
-                      color: Colors.grey.shade500,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    child: Row(
-                      children: [
-                        const CircleAvatar(
-                          radius: 13,
-                          backgroundImage: NetworkImage(
-                              "https://images.pexels.com/photos/1573324/pexels-photo-1573324.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
+                    Gaps.v5,
+                    if (constraints.maxWidth < 200 ||
+                        constraints.maxWidth > 250)
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          color: Colors.grey.shade500,
+                          fontWeight: FontWeight.w600,
                         ),
-                        Gaps.h6,
-                        const Expanded(
-                          child: Text(
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            "coolsexyfansyrussianblue",
-                          ),
+                        child: Row(
+                          children: [
+                            const CircleAvatar(
+                              radius: 13,
+                              backgroundImage: NetworkImage(
+                                  "https://images.pexels.com/photos/1573324/pexels-photo-1573324.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
+                            ),
+                            Gaps.h6,
+                            const Expanded(
+                              child: Text(
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                "coolsexyfansyrussianblue",
+                              ),
+                            ),
+                            Gaps.h6,
+                            FaIcon(
+                              FontAwesomeIcons.heart,
+                              size: Sizes.size14,
+                              color: Colors.grey.shade600,
+                            ),
+                            Gaps.h2,
+                            const Text(
+                              "2.5M",
+                              style: TextStyle(
+                                fontSize: Sizes.size12,
+                              ),
+                            ),
+                          ],
                         ),
-                        Gaps.h6,
-                        FaIcon(
-                          FontAwesomeIcons.heart,
-                          size: Sizes.size14,
-                          color: Colors.grey.shade600,
-                        ),
-                        Gaps.h2,
-                        const Text(
-                          "2.5M",
-                          style: TextStyle(
-                            fontSize: Sizes.size12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                      )
+                  ],
+                ),
               ),
             ),
             for (var tab in tabs.skip(1))

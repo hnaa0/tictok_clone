@@ -17,7 +17,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIdx = 4;
+  int _selectedIdx = 1;
   bool _isTapDown = false;
 
   final screens = [

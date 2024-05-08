@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/settings/settings_screen.dart';
@@ -47,175 +48,370 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               SliverToBoxAdapter(
                 child: Column(
                   children: [
-                    const CircleAvatar(
-                      radius: 30,
-                      foregroundImage:
-                          AssetImage("assets/images/gnarprofile.jpg"),
-                      child: Text("GNAR"),
-                    ),
-                    Gaps.v20,
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "@gnarthecat",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Sizes.size18,
-                          ),
-                        ),
-                        Gaps.h5,
-                        FaIcon(
-                          FontAwesomeIcons.solidCircleCheck,
-                          size: Sizes.size16,
-                          color: Colors.lightBlue,
-                        ),
-                      ],
-                    ),
-                    Gaps.v24,
-                    SizedBox(
-                      height: Sizes.size48,
-                      child: Row(
+                    if (MediaQuery.of(context).size.width < Breakpoints.lg) ...[
+                      const CircleAvatar(
+                        radius: 30,
+                        foregroundImage:
+                            AssetImage("assets/images/gnarprofile.jpg"),
+                        child: Text("GNAR"),
+                      ),
+                      Gaps.v20,
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const UserAccount(
-                            category: "Following",
-                            numbers: "97",
+                          Text(
+                            "@gnarthecat",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: Sizes.size18,
+                            ),
                           ),
-                          VerticalDivider(
-                            thickness: Sizes.size1, // 구분선의 굵기
-                            width: Sizes.size32, // 사이 공간의 크기
-                            indent: Sizes.size14,
-                            endIndent: Sizes.size14,
-                            color: Colors.grey.shade300,
-                          ),
-                          const UserAccount(
-                            category: "Followers",
-                            numbers: "10.2M",
-                          ),
-                          VerticalDivider(
-                            thickness: Sizes.size1,
-                            width: Sizes.size32,
-                            indent: Sizes.size14,
-                            endIndent: Sizes.size14,
-                            color: Colors.grey.shade300,
-                          ),
-                          const UserAccount(
-                            category: "Likes",
-                            numbers: "158.7M",
+                          Gaps.h5,
+                          FaIcon(
+                            FontAwesomeIcons.solidCircleCheck,
+                            size: Sizes.size16,
+                            color: Colors.lightBlue,
                           ),
                         ],
                       ),
-                    ),
-                    Gaps.v14,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: FractionallySizedBox(
-                            widthFactor: 1,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: Sizes.size12,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                borderRadius: BorderRadius.circular(
-                                  Sizes.size2,
-                                ),
-                              ),
-                              child: const Text(
-                                "Follow",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                      Gaps.v24,
+                      SizedBox(
+                        height: Sizes.size48,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const UserAccount(
+                              category: "Following",
+                              numbers: "97",
                             ),
-                          ),
-                        ),
-                        Gaps.h3,
-                        Flexible(
-                          child: FractionallySizedBox(
-                            widthFactor: 0.3,
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(
-                                vertical: Sizes.size10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                  width: Sizes.size1,
-                                  color: Colors.grey.shade300,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  Sizes.size2,
-                                ),
-                              ),
-                              child: const FaIcon(
-                                FontAwesomeIcons.youtube,
-                                size: Sizes.size18,
-                              ),
+                            VerticalDivider(
+                              thickness: Sizes.size1, // 구분선의 굵기
+                              width: Sizes.size32, // 사이 공간의 크기
+                              indent: Sizes.size14,
+                              endIndent: Sizes.size14,
+                              color: Colors.grey.shade300,
                             ),
-                          ),
-                        ),
-                        Gaps.h3,
-                        Flexible(
-                          child: FractionallySizedBox(
-                            widthFactor: 0.3,
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(
-                                vertical: Sizes.size12,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                  width: Sizes.size1,
-                                  color: Colors.grey.shade300,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  Sizes.size2,
-                                ),
-                              ),
-                              child: const FaIcon(
-                                FontAwesomeIcons.chevronDown,
-                                size: Sizes.size14,
-                              ),
+                            const UserAccount(
+                              category: "Followers",
+                              numbers: "10.2M",
                             ),
-                          ),
+                            VerticalDivider(
+                              thickness: Sizes.size1,
+                              width: Sizes.size32,
+                              indent: Sizes.size14,
+                              endIndent: Sizes.size14,
+                              color: Colors.grey.shade300,
+                            ),
+                            const UserAccount(
+                              category: "Likes",
+                              numbers: "158.7M",
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    Gaps.v14,
-                    const Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: Sizes.size32,
                       ),
-                      child: Text(
-                          textAlign: TextAlign.center,
-                          "All highlights and where to watch live stories on GNAR+ \n ❤"),
-                    ),
-                    Gaps.v14,
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FaIcon(
-                          FontAwesomeIcons.link,
-                          size: Sizes.size12,
-                        ),
-                        Gaps.h4,
-                        Text(
-                          "https://www.instagram.com/gnar.zip",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
+                      Gaps.v14,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: FractionallySizedBox(
+                              widthFactor: 1,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: Sizes.size12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  borderRadius: BorderRadius.circular(
+                                    Sizes.size2,
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Follow",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
+                          Gaps.h3,
+                          Flexible(
+                            child: FractionallySizedBox(
+                              widthFactor: 0.3,
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: Sizes.size10,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    width: Sizes.size1,
+                                    color: Colors.grey.shade300,
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                    Sizes.size2,
+                                  ),
+                                ),
+                                child: const FaIcon(
+                                  FontAwesomeIcons.youtube,
+                                  size: Sizes.size18,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Gaps.h3,
+                          Flexible(
+                            child: FractionallySizedBox(
+                              widthFactor: 0.3,
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: Sizes.size12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    width: Sizes.size1,
+                                    color: Colors.grey.shade300,
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                    Sizes.size2,
+                                  ),
+                                ),
+                                child: const FaIcon(
+                                  FontAwesomeIcons.chevronDown,
+                                  size: Sizes.size14,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Gaps.v14,
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: Sizes.size32,
                         ),
-                      ],
-                    ),
-                    Gaps.v20,
+                        child: Text(
+                            textAlign: TextAlign.center,
+                            "All highlights and where to watch live stories on GNAR+ \n ❤"),
+                      ),
+                      Gaps.v14,
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FaIcon(
+                            FontAwesomeIcons.link,
+                            size: Sizes.size12,
+                          ),
+                          Gaps.h4,
+                          Text(
+                            "https://www.instagram.com/gnar.zip",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Gaps.v20,
+                    ],
+                    if (MediaQuery.of(context).size.width >=
+                        Breakpoints.lg) ...[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 70,
+                                foregroundImage:
+                                    AssetImage("assets/images/gnarprofile.jpg"),
+                                child: Text("GNAR"),
+                              ),
+                              Gaps.v16,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "@gnarthecat",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: Sizes.size18,
+                                    ),
+                                  ),
+                                  Gaps.h5,
+                                  FaIcon(
+                                    FontAwesomeIcons.solidCircleCheck,
+                                    size: Sizes.size16,
+                                    color: Colors.lightBlue,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Gaps.h40,
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Gaps.v20,
+                              SizedBox(
+                                height: Sizes.size48,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const UserAccount(
+                                      category: "Following",
+                                      numbers: "97",
+                                    ),
+                                    VerticalDivider(
+                                      thickness: Sizes.size1, // 구분선의 굵기
+                                      width: Sizes.size32, // 사이 공간의 크기
+                                      indent: Sizes.size14,
+                                      endIndent: Sizes.size14,
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    const UserAccount(
+                                      category: "Followers",
+                                      numbers: "10.2M",
+                                    ),
+                                    VerticalDivider(
+                                      thickness: Sizes.size1,
+                                      width: Sizes.size32,
+                                      indent: Sizes.size14,
+                                      endIndent: Sizes.size14,
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    const UserAccount(
+                                      category: "Likes",
+                                      numbers: "158.7M",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Gaps.v32,
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: Breakpoints.md,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: FractionallySizedBox(
+                                widthFactor: 1,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: Sizes.size12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: BorderRadius.circular(
+                                      Sizes.size2,
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    "Follow",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Gaps.h3,
+                            Flexible(
+                              child: FractionallySizedBox(
+                                widthFactor: 0.3,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: Sizes.size10,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      width: Sizes.size1,
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    borderRadius: BorderRadius.circular(
+                                      Sizes.size2,
+                                    ),
+                                  ),
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.youtube,
+                                    size: Sizes.size18,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Gaps.h3,
+                            Flexible(
+                              child: FractionallySizedBox(
+                                widthFactor: 0.3,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: Sizes.size12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      width: Sizes.size1,
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    borderRadius: BorderRadius.circular(
+                                      Sizes.size2,
+                                    ),
+                                  ),
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.chevronDown,
+                                    size: Sizes.size14,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Gaps.v24,
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: Sizes.size32,
+                        ),
+                        child: Text(
+                            textAlign: TextAlign.center,
+                            "All highlights and where to watch live stories on GNAR+ \n ❤"),
+                      ),
+                      Gaps.v14,
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FaIcon(
+                            FontAwesomeIcons.link,
+                            size: Sizes.size12,
+                          ),
+                          Gaps.h4,
+                          Text(
+                            "https://www.instagram.com/gnar.zip",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Gaps.v28,
+                    ]
                   ],
                 ),
               ),
@@ -232,8 +428,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     ScrollViewKeyboardDismissBehavior.onDrag,
                 padding: EdgeInsets.zero,
                 itemCount: 20,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount:
+                      MediaQuery.of(context).size.width < Breakpoints.lg
+                          ? 3
+                          : 5,
                   crossAxisSpacing: Sizes.size2,
                   mainAxisSpacing: Sizes.size2,
                   childAspectRatio: 9 / 14,

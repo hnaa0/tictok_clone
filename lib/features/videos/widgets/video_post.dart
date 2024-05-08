@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
@@ -52,6 +53,9 @@ class _VideoPostState extends State<VideoPost>
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
+    if (kIsWeb) {
+      await _videoPlayerController.setVolume(0);
+    }
     setState(() {
       _videoPlayerController.addListener(_onVideoChange);
     });
@@ -132,6 +136,11 @@ class _VideoPostState extends State<VideoPost>
       builder: (context) => const VideoComments(),
     ); // 유저가 bottom sheet 해제 시 resolve됨.
     _onTogglePause();
+  }
+
+  void _onUnmuteTap() {
+    _videoPlayerController.setVolume(0.5);
+    setState(() {});
   }
 
   @override
@@ -268,7 +277,19 @@ class _VideoPostState extends State<VideoPost>
                 ),
               ],
             ),
-          )
+          ),
+          if (kIsWeb && _videoPlayerController.value.volume == 0.0)
+            Positioned(
+              top: Sizes.size18,
+              right: Sizes.size18,
+              child: GestureDetector(
+                onTap: _onUnmuteTap,
+                child: const FaIcon(
+                  FontAwesomeIcons.volumeXmark,
+                  color: Colors.white,
+                ),
+              ),
+            ),
         ],
       ),
     );
