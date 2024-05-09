@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
+import 'package:flutter/services.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 // import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // bind, widget, engine 초기화-연결
 
-  // await SystemChrome.setPreferredOrientations(
-  //   [
-  //     DeviceOrientation.portraitUp,
-  //   ],
-  // );
+  await SystemChrome.setPreferredOrientations(
+    [
+      DeviceOrientation.portraitUp,
+    ],
+  );
 
-  // // main 말고도 원하는 화면에서 사용 가능
-  // SystemChrome.setSystemUIOverlayStyle(
-  //   SystemUiOverlayStyle.dark,
-  // );
+  // main 말고도 원하는 화면에서 사용 가능
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle.dark,
+  );
 
   runApp(const TiktokApp());
 }
@@ -29,7 +30,12 @@ class TiktokApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Tiktok Clone',
+      themeMode: ThemeMode.system,
       theme: ThemeData(
+        bottomAppBarTheme: BottomAppBarTheme(
+          color: Colors.grey.shade100,
+        ),
+        brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color(0xFFE9435A),
         // colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFE9435A)),
@@ -51,7 +57,15 @@ class TiktokApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const MainNavigationScreen(),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black,
+        primaryColor: const Color(0xFFE9435A),
+        bottomAppBarTheme: BottomAppBarTheme(
+          color: Colors.grey.shade900,
+        ),
+      ),
+      home: const SignUpScreen(),
     );
   }
 }
