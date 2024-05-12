@@ -1,0 +1,6 @@
+# 번역 파일 위치
+arb-dir: lib/intl
+# 마스터 파일(기본 언어가 들어있는 파일)
+template-arb-file: intl_en.arb
+# 번역본 파일 생성 위치
+output-localizations-file: intl_generated.dart
