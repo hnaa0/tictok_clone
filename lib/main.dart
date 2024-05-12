@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
-// import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
 
 void main() async {
@@ -37,7 +34,7 @@ class TiktokApp extends StatelessWidget {
           color: Colors.grey.shade100,
         ),
         brightness: Brightness.light,
-        textTheme: GoogleFonts.poppinsTextTheme(),
+        textTheme: Typography.blackMountainView,
         scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color(0xFFE9435A),
         // colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFE9435A)),
@@ -47,8 +44,9 @@ class TiktokApp extends StatelessWidget {
         // splashColor, highlightColor: onTap시 효과 안보이게
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        useMaterial3: false,
+        // useMaterial3: true,
         appBarTheme: const AppBarTheme(
+          surfaceTintColor: Colors.white,
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
           elevation: 0,
@@ -58,19 +56,49 @@ class TiktokApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
+        tabBarTheme: TabBarTheme(
+          unselectedLabelColor: Colors.grey.shade500,
+          labelColor: Colors.black,
+          indicatorColor: Colors.black,
+        ),
+        listTileTheme: const ListTileThemeData(
+          iconColor: Colors.black,
+        ),
       ),
       darkTheme: ThemeData(
-        textTheme: GoogleFonts.poppinsTextTheme(
-          ThemeData(brightness: Brightness.dark).textTheme,
-        ),
+        textTheme: Typography.whiteMountainView,
         brightness: Brightness.dark,
         scaffoldBackgroundColor: Colors.black,
         primaryColor: const Color(0xFFE9435A),
+        appBarTheme: AppBarTheme(
+          actionsIconTheme: IconThemeData(
+            color: Colors.grey.shade100,
+          ),
+          surfaceTintColor: Colors.grey.shade900,
+          backgroundColor: Colors.grey.shade900,
+          titleTextStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: Sizes.size18,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         bottomAppBarTheme: BottomAppBarTheme(
+          padding: EdgeInsets.zero,
           color: Colors.grey.shade900,
         ),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Color(0xFFE9435A),
+        ),
+        tabBarTheme: TabBarTheme(
+          indicatorColor: Colors.white,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.grey.shade700,
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.grey.shade100,
+        ),
       ),
-      home: const SignUpScreen(),
+      home: const MainNavigationScreen(),
     );
   }
 }

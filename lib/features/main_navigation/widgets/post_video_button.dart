@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/utils.dart';
 
 class PostVideoButton extends StatefulWidget {
   const PostVideoButton({
@@ -19,6 +20,7 @@ class PostVideoButton extends StatefulWidget {
 class _PostVideoButtonState extends State<PostVideoButton> {
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       child: Stack(
@@ -62,13 +64,13 @@ class _PostVideoButtonState extends State<PostVideoButton> {
               horizontal: Sizes.size12,
             ),
             decoration: BoxDecoration(
-              color: !widget.inverted ? Colors.white : Colors.black,
+              color: !widget.inverted || isDark ? Colors.white : Colors.black,
               borderRadius: BorderRadius.circular(Sizes.size6),
             ),
             child: Center(
               child: FaIcon(
                 FontAwesomeIcons.plus,
-                color: !widget.inverted ? Colors.black : Colors.white,
+                color: !widget.inverted || isDark ? Colors.black : Colors.white,
                 size: Sizes.size18,
               ),
             ),

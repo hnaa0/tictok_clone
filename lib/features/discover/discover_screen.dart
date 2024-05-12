@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/utils.dart';
 
 final tabs = [
   "Top",
@@ -91,12 +92,14 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                             vertical: Sizes.size6,
                           ),
                           filled: true,
-                          fillColor: Colors.grey.shade200,
+                          fillColor: isDarkMode(context)
+                              ? Colors.grey.shade700
+                              : Colors.grey.shade200,
                           border: const OutlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
-                          prefixIcon: const Padding(
-                            padding: EdgeInsets.symmetric(
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.symmetric(
                               horizontal: Sizes.size14,
                             ),
                             child: Row(
@@ -105,7 +108,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                                 // Gaps.h12,
                                 FaIcon(
                                   FontAwesomeIcons.magnifyingGlass,
-                                  color: Colors.black,
+                                  color: isDarkMode(context)
+                                      ? Colors.grey.shade300
+                                      : Colors.black,
                                   size: Sizes.size20,
                                 ),
                               ],
@@ -123,7 +128,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                                       children: [
                                         FaIcon(
                                           FontAwesomeIcons.circleXmark,
-                                          color: Colors.grey.shade700,
+                                          color: isDarkMode(context)
+                                              ? Colors.grey.shade300
+                                              : Colors.grey.shade700,
                                           size: Sizes.size20,
                                         ),
                                       ],
@@ -157,13 +164,10 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               ),
               splashFactory: NoSplash.splashFactory,
               isScrollable: true,
-              unselectedLabelColor: Colors.grey.shade500,
-              labelColor: Colors.black,
               labelStyle: const TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: Sizes.size16,
               ),
-              indicatorColor: Colors.black,
               tabs: [
                 for (var tab in tabs)
                   Tab(
@@ -204,13 +208,14 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                       ),
                     ),
                     Gaps.v10,
-                    Text(
+                    const Text(
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      "${constraints.maxWidth} is very long long caption flutter so good amazing wowwow",
-                      style: const TextStyle(
+                      "This is very long long caption flutter so good amazing wowwow",
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: Sizes.size16,
+                        height: 1.1,
                       ),
                     ),
                     Gaps.v5,
@@ -218,7 +223,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         constraints.maxWidth > 250)
                       DefaultTextStyle(
                         style: TextStyle(
-                          color: Colors.grey.shade500,
+                          color: isDarkMode(context)
+                              ? Colors.grey.shade300
+                              : Colors.grey.shade500,
                           fontWeight: FontWeight.w600,
                         ),
                         child: Row(

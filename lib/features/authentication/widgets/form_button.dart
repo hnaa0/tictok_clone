@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/utils.dart';
 
 class FormButton extends StatelessWidget {
   const FormButton({
@@ -23,7 +24,9 @@ class FormButton extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Sizes.size3),
             color: disabled
-                ? Colors.grey.shade300
+                ? isDarkMode(context)
+                    ? Colors.grey.shade800
+                    : Colors.grey.shade300
                 : Theme.of(context).primaryColor),
         duration: const Duration(milliseconds: 300),
         // AnimatedDefaultTextStyle: 텍스트가 바뀔 때 애니메이션 효과를 주는 위젯

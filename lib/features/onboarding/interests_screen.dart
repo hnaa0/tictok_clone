@@ -97,9 +97,10 @@ class _InterestsScreenState extends State<InterestsScreen> {
       appBar: AppBar(
         // 움직임에 따라 투명도를 조절하는 위젯
         title: AnimatedOpacity(
-            opacity: _showTitle ? 1 : 0,
-            duration: const Duration(milliseconds: 300),
-            child: const Text("Choose your interests")),
+          opacity: _showTitle ? 1 : 0,
+          duration: const Duration(milliseconds: 300),
+          child: const Text("Choose your interests"),
+        ),
         centerTitle: true,
       ),
       body: Scrollbar(
@@ -146,39 +147,35 @@ class _InterestsScreenState extends State<InterestsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 5,
-        child: Padding(
-          padding: const EdgeInsets.only(
-            bottom: Sizes.size40,
-            top: Sizes.size20,
-            left: Sizes.size24,
-            right: Sizes.size24,
-          ),
-          child: GestureDetector(
-            onTap: _onNextTap,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: Sizes.size20,
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.only(
+          bottom: Sizes.size40,
+          top: Sizes.size20,
+          left: Sizes.size24,
+          right: Sizes.size24,
+        ),
+        child: GestureDetector(
+          onTap: _onNextTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: Sizes.size20,
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.circular(
+                Sizes.size4,
               ),
-              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-              child: const Text(
-                "Next",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: Sizes.size16,
-                ),
+            ),
+            child: const Text(
+              "Next",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: Sizes.size16,
+                height: 1.1,
               ),
             ),
           ),
-
-          // CupertinoButton 위젯을 사용한 버튼
-          // child: CupertinoButton(
-          //   onPressed: () {},
-          //   color: Theme.of(context).primaryColor,
-          //   child: const Text("Next"),
-          // ),
         ),
       ),
     );

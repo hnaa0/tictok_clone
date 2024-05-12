@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/login_form_screen.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
+import 'package:tiktok_clone/utils.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -42,13 +41,11 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             children: [
               Gaps.v80,
-              Text(
+              const Text(
                 "Login to Tiktok",
-                style: GoogleFonts.montserrat(
-                  textStyle: const TextStyle(
-                    fontSize: Sizes.size24,
-                    fontWeight: FontWeight.w700,
-                  ),
+                style: TextStyle(
+                  fontSize: Sizes.size24,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
               Gaps.v20,
@@ -77,13 +74,13 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
       // 위젯을 화면 하단에 고정시켜줌.
-      bottomNavigationBar: BottomAppBar(
-        shadowColor: Colors.black,
-        elevation: 5,
-        surfaceTintColor: Colors.grey.shade100,
-        height: 90,
+      bottomNavigationBar: Container(
+        color: isDarkMode(context) ? null : Colors.grey.shade100,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: Sizes.size20),
+          padding: const EdgeInsets.only(
+            top: Sizes.size32,
+            bottom: Sizes.size64,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
