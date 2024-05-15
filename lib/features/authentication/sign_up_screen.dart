@@ -5,8 +5,8 @@ import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/features/authentication/login_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
+import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/utils.dart';
-import "package:flutter_gen/gen_l10n/app_localizations.dart";
 // import 'package:tiktok_clone/utils.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -49,7 +49,7 @@ class SignUpScreen extends StatelessWidget {
                 children: [
                   Gaps.v80,
                   Text(
-                    AppLocalizations.of(context)!.signUpTitle("Tiktok"),
+                    S.of(context).signUpTitle("Tiktok", DateTime.now()),
                     style: const TextStyle(
                       fontSize: Sizes.size24,
                       fontWeight: FontWeight.w700,
@@ -57,11 +57,11 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   Gaps.v20,
                   // 컬러 하드 코딩 수정 방법2.
-                  const Opacity(
+                  Opacity(
                     opacity: 0.7,
                     child: Text(
-                      "Create a profile, follow other accounts, make your own videos, and more.",
-                      style: TextStyle(
+                      S.of(context).signUpSubTitle(0),
+                      style: const TextStyle(
                         fontSize: Sizes.size16,
                         // 컬러 하드 코딩 수정 방법1.
                         // color: isDarkMode(context)
@@ -76,12 +76,12 @@ class SignUpScreen extends StatelessWidget {
                     AuthButton(
                         buttonFunc: _onEmailTap,
                         icon: const FaIcon(FontAwesomeIcons.solidUser),
-                        text: "Use Email & Password"),
+                        text: S.of(context).emailPwButton),
                     Gaps.v16,
                     AuthButton(
                         buttonFunc: _onEmailTap,
                         icon: const FaIcon(FontAwesomeIcons.apple),
-                        text: "Continue with Apple"),
+                        text: S.of(context).appleButton),
                   ],
                   if (orientation == Orientation.landscape)
                     Row(
@@ -90,14 +90,14 @@ class SignUpScreen extends StatelessWidget {
                           child: AuthButton(
                               buttonFunc: _onEmailTap,
                               icon: const FaIcon(FontAwesomeIcons.solidUser),
-                              text: "Use Email & Password"),
+                              text: S.of(context).emailPwButton),
                         ),
                         Gaps.h16,
                         Expanded(
                           child: AuthButton(
                               buttonFunc: _onEmailTap,
                               icon: const FaIcon(FontAwesomeIcons.apple),
-                              text: "Continue with Apple"),
+                              text: S.of(context).appleButton),
                         ),
                       ],
                     ),
@@ -115,15 +115,15 @@ class SignUpScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Already have an account?",
-                    style: TextStyle(fontSize: Sizes.size16),
+                  Text(
+                    S.of(context).alreadyHaveAnAccount,
+                    style: const TextStyle(fontSize: Sizes.size16),
                   ),
                   Gaps.h5,
                   GestureDetector(
                     onTap: () => _onLoginTap(context),
                     child: Text(
-                      "Log In",
+                      S.of(context).login("female"),
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.w600,
