@@ -2,48 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/features/authentication/login_screen.dart';
+import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/utils.dart';
 // import 'package:tiktok_clone/utils.dart';
 
 class SignUpScreen extends StatelessWidget {
+  static String routeName = "/";
   const SignUpScreen({super.key});
 
   void _onLoginTap(BuildContext context) async {
-    // push: 화면을 위에 올리는 것.
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-    );
-    print("user came back");
+    final result = await Navigator.of(context).pushNamed(LoginScreen.routeName);
+    print(result);
   }
 
   void _onEmailTap(BuildContext context) {
-    Navigator.of(context).push(
-      // PageRouteBuilder: page route에 animation, duration 등을 넣을 수 있게 해주는 위젯
-      PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 500),
-        reverseTransitionDuration: const Duration(milliseconds: 500),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          final offsetAnimation =
-              Tween(begin: const Offset(0, 1), end: Offset.zero)
-                  .animate(animation);
-          return SlideTransition(
-            position: offsetAnimation,
-            child: FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-          );
-        },
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const UsernameScreen(),
-      ),
-    );
+    // Navigator.of(context).push(
+    //   // PageRouteBuilder: page route에 animation, duration 등을 넣을 수 있게 해주는 위젯
+    //   PageRouteBuilder(
+    //     transitionDuration: const Duration(milliseconds: 500),
+    //     reverseTransitionDuration: const Duration(milliseconds: 500),
+    //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
+    //       final offsetAnimation =
+    //           Tween(begin: const Offset(0, 1), end: Offset.zero)
+    //               .animate(animation);
+    //       return SlideTransition(
+    //         position: offsetAnimation,
+    //         child: FadeTransition(
+    //           opacity: animation,
+    //           child: child,
+    //         ),
+    //       );
+    //     },
+    //     pageBuilder: (context, animation, secondaryAnimation) =>
+    //         const UsernameScreen(),
+    //   ),
+    // );
+    Navigator.of(context).pushNamed(UsernameScreen.routeName);
   }
 
   @override
