@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/login_form_screen.dart';
@@ -12,8 +13,7 @@ class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   void onSignupTap(BuildContext context) {
-    // pop: 가장 위에 올려졌던 화면을 없앨 수 있음.
-    Navigator.of(context).pop();
+    context.pop();
   }
 
   void _onEmailTap(BuildContext context) {

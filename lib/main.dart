@@ -2,25 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import "package:flutter_localizations/flutter_localizations.dart";
-import 'package:tiktok_clone/features/authentication/email_screen.dart';
-import 'package:tiktok_clone/features/authentication/login_screen.dart';
-import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
-import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
+import 'package:tiktok_clone/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // bind, widget, engine 초기화-연결
 
-  await SystemChrome.setPreferredOrientations(
-    [
-      DeviceOrientation.portraitUp,
-    ],
-  );
+  // await SystemChrome.setPreferredOrientations(
+  //   [
+  //     DeviceOrientation.portraitUp,
+  //   ],
+  // );
 
-  // main 말고도 원하는 화면에서 사용 가능
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle.dark,
-  );
+  // // main 말고도 원하는 화면에서 사용 가능
+  // SystemChrome.setSystemUIOverlayStyle(
+  //   SystemUiOverlayStyle.dark,
+  // );
 
   runApp(const TiktokApp());
 }
@@ -31,7 +28,8 @@ class TiktokApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // S.load(const Locale("en"));
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       debugShowCheckedModeBanner: false,
       title: 'Tiktok Clone',
       localizationsDelegates: const [
@@ -114,13 +112,6 @@ class TiktokApp extends StatelessWidget {
           color: Colors.grey.shade100,
         ),
       ),
-      initialRoute: SignUpScreen.routeName,
-      routes: {
-        "/": (context) => const SignUpScreen(),
-        UsernameScreen.routeName: (context) => const UsernameScreen(),
-        LoginScreen.routeName: (context) => const LoginScreen(),
-        EmailScreen.routeName: (context) => const EmailScreen(),
-      },
     );
   }
 }
