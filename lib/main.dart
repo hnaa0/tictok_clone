@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import "package:flutter_localizations/flutter_localizations.dart";
 import 'package:tiktok_clone/generated/l10n.dart';
