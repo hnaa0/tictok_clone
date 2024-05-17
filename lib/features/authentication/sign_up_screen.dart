@@ -19,32 +19,15 @@ class SignUpScreen extends StatelessWidget {
   void _onLoginTap(BuildContext context) async {
     // go()는 route stack에 관계없이 별도의 위치로 이동시킴.
     // 뒤로가기가 불가능해지기 때문에 기존의 stack에서 벗어나 새로운 시작 가능.
-    context.push(LoginScreen.routeName);
+    context.pushNamed(LoginScreen.routeName);
   }
 
   void _onEmailTap(BuildContext context) {
-    // Navigator.of(context).push(
-    //   // PageRouteBuilder: page route에 animation, duration 등을 넣을 수 있게 해주는 위젯
-    //   PageRouteBuilder(
-    //     transitionDuration: const Duration(milliseconds: 500),
-    //     reverseTransitionDuration: const Duration(milliseconds: 500),
-    //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-    //       final offsetAnimation =
-    //           Tween(begin: const Offset(0, 1), end: Offset.zero)
-    //               .animate(animation);
-    //       return SlideTransition(
-    //         position: offsetAnimation,
-    //         child: FadeTransition(
-    //           opacity: animation,
-    //           child: child,
-    //         ),
-    //       );
-    //     },
-    //     pageBuilder: (context, animation, secondaryAnimation) =>
-    //         const UsernameScreen(),
-    //   ),
-    // );
-    context.pushNamed(UsernameScreen.routeName);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const UsernameScreen(),
+        ));
   }
 
   @override

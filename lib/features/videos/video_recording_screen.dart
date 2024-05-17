@@ -9,6 +9,9 @@ import 'package:tiktok_clone/features/videos/video_preview_screen.dart';
 import 'package:tiktok_clone/features/videos/widgets/camera_setting_button.dart';
 
 class VideoRecordingScreen extends StatefulWidget {
+  static const String routeName = "postVideo";
+  static const String routeURL = "/upload";
+
   const VideoRecordingScreen({super.key});
 
   @override
@@ -233,6 +236,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                 alignment: Alignment.center,
                 children: [
                   CameraPreview(_cameraController),
+                  const Positioned(
+                    top: Sizes.size40,
+                    left: Sizes.size12,
+                    child: CloseButton(
+                      color: Colors.white,
+                    ),
+                  ),
                   Positioned(
                     top: Sizes.size40,
                     right: Sizes.size12,
