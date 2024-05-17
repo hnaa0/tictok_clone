@@ -16,9 +16,13 @@ class VideoRecordingScreen extends StatefulWidget {
 }
 
 class _VideoRecordingScreenState extends State<VideoRecordingScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   bool _hasPermission = false;
   bool _isSelfieMode = false;
+
+  late double _initZoomLevel;
+  double _curZoomLevel = 1.0;
+  double _maxZoomLevel = 1.0;
 
   late FlashMode _flashMode;
 
@@ -55,6 +59,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     await _cameraController.initialize();
 
     _flashMode = _cameraController.value.flashMode;
+
+    _maxZoomLevel = await _cameraController.getMaxZoomLevel();
+    _initZoomLevel = await _cameraController.getMinZoomLevel();
   }
 
   Future<void> initPermissions() async {
@@ -104,7 +111,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     setState(() {});
   }
 
-  Future<void> _startRecording(TapDownDetails _) async {
+  Future<void> _startRecording() async {
     if (_cameraController.value.isRecordingVideo) return;
 
     await _cameraController.startVideoRecording();
@@ -152,10 +159,23 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     );
   }
 
+  Future<void> _onLongPressMoveUpdate(
+      LongPressMoveUpdateDetails details) async {
+    if (!_cameraController.value.isRecordingVideo) return;
+
+    double change = details.localPosition.dy * -0.05;
+    _curZoomLevel =
+        (_initZoomLevel + change).clamp(_initZoomLevel, _maxZoomLevel);
+    await _cameraController.setZoomLevel(_curZoomLevel);
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
     initPermissions();
+    WidgetsBinding.instance
+        .addObserver(this); // 유저가 앱을 벗어나면 알려주고, 다시 돌아오면 정보를 받음
     _progressAnimationController.addListener(() {
       setState(() {});
     });
@@ -172,6 +192,18 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     _buttonAnimationController.dispose();
     _progressAnimationController.dispose();
     super.dispose();
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (!_hasPermission) return;
+    if (!_cameraController.value.isInitialized) return;
+    if (state == AppLifecycleState.inactive) {
+      _cameraController.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      await initCamera();
+      setState(() {});
+    }
   }
 
   @override
@@ -249,8 +281,12 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                       children: [
                         const Spacer(),
                         GestureDetector(
-                          onTapDown: _startRecording,
+                          onLongPressStart: (details) => _startRecording(),
                           onTapUp: (details) => _stopRecording(),
+                          onLongPressUp: _stopRecording,
+                          onLongPressMoveUpdate:
+                              (LongPressMoveUpdateDetails details) =>
+                                  _onLongPressMoveUpdate(details),
                           child: ScaleTransition(
                             scale: _buttonAnimation,
                             child: Stack(
