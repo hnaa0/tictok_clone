@@ -3,9 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:tiktok_clone/common/widgets/theme_configuration/theme_configuration.dart';
-import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -38,23 +37,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             child: ListView(
               children: [
-                AnimatedBuilder(
-                  animation: themeDarkmode,
-                  builder: (context, child) => SwitchListTile.adaptive(
-                    value: themeDarkmode.value,
-                    onChanged: (value) {
-                      themeDarkmode.value = !themeDarkmode.value;
-                    },
-                    title: const Text("Dark Mode"),
-                    subtitle: const Text("Change to dark mode."),
-                  ),
+                SwitchListTile.adaptive(
+                  value: context.watch<PlaybackConfigViewModel>().muted,
+                  onChanged: (value) =>
+                      context.read<PlaybackConfigViewModel>().setMuted(value),
+                  title: const Text("Muted Video"),
+                  subtitle: const Text("Video will be muted by default."),
                 ),
                 SwitchListTile.adaptive(
-                  value: context.watch<VideoConfig>().isMuted,
-                  onChanged: (value) =>
-                      context.read<VideoConfig>().toggleIsMuted(),
-                  title: const Text("Auto Mute"),
-                  subtitle: const Text("Videos muted by default."),
+                  value: context.watch<PlaybackConfigViewModel>().autoplay,
+                  onChanged: (value) => context
+                      .read<PlaybackConfigViewModel>()
+                      .setAutoplay(value),
+                  title: const Text("Autoplay"),
+                  subtitle:
+                      const Text("Video will start playing automatically."),
                 ),
                 // ios = ios 스타일, android = android 스타일 보여줌
                 SwitchListTile.adaptive(
