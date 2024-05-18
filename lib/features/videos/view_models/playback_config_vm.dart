@@ -1,38 +1,34 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/features/videos/models/playback_config_model.dart';
 import 'package:tiktok_clone/features/videos/repos/video_playback_config_repo.dart';
 
-class PlaybackConfigViewModel extends ChangeNotifier {
+class PlaybackConfigViewModel extends Notifier<PlaybackConfigModel> {
   final VideoPlaybackConfigRepository _repository;
-
-  late final PlaybackConfigModel _model = PlaybackConfigModel(
-    autoplay: _repository.isAutoplay(),
-    muted: _repository.isMuted(),
-  );
 
   PlaybackConfigViewModel(this._repository);
 
-  // repository, model를 직접 공개하지 않고 getter로 값 가져오기
-  bool get muted => _model.muted;
-  bool get autoplay => _model.autoplay;
-
   void setMuted(bool value) {
-    // 1. repository에서 값을 디스크게 persist하게 저장
-    // 2. model 수정
-    // 3. 리스너들에게 notify
-
     _repository.setMuted(value);
-    _model.muted = value;
-    notifyListeners();
+    state = PlaybackConfigModel(autoplay: state.autoplay, muted: value);
   }
 
   void setAutoplay(bool value) {
-    // 1. repository에서 값을 디스크게 persist하게 저장
-    // 2. model 수정
-    // 3. 리스너들에게 notify
-
     _repository.setAutoplay(value);
-    _model.autoplay = value;
-    notifyListeners();
+    state = PlaybackConfigModel(autoplay: value, muted: state.muted);
+  }
+
+  @override
+  PlaybackConfigModel build() {
+    // state의 초기 데이터 반환
+    return PlaybackConfigModel(
+      autoplay: _repository.isAutoplay(),
+      muted: _repository.isMuted(),
+    );
   }
 }
+
+// <1.expose할 provider 2.provider가 expose할 데이터>
+final playbackConfigProvider =
+    NotifierProvider<PlaybackConfigViewModel, PlaybackConfigModel>(
+  () => throw UnimplementedError(),
+);

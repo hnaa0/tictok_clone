@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
@@ -17,7 +17,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 // 애니메이션이 ticker 겟 -> 애니메이션이 재생될 때 ticker가 매 프레임마다 애니메이션에게 알려줌.
 
-class VideoPost extends StatefulWidget {
+class VideoPost extends ConsumerStatefulWidget {
   const VideoPost({
     super.key,
     required this.onVideoFinished,
@@ -29,10 +29,10 @@ class VideoPost extends StatefulWidget {
   final int index;
 
   @override
-  State<VideoPost> createState() => _VideoPostState();
+  VideoPostState createState() => VideoPostState();
 }
 
-class _VideoPostState extends State<VideoPost>
+class VideoPostState extends ConsumerState<VideoPost>
     with SingleTickerProviderStateMixin {
   final VideoPlayerController _videoPlayerController =
       VideoPlayerController.asset("assets/videos/gooroonggooroong.mp4");
@@ -41,7 +41,7 @@ class _VideoPostState extends State<VideoPost>
 
   bool _isPaused = false;
   bool _isMoreShowed = false;
-  late bool _isMuted = context.read<PlaybackConfigViewModel>().muted;
+  late bool _isMuted;
 
   final Duration _animationDuration = const Duration(milliseconds: 300);
 
@@ -77,9 +77,8 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
 
-    context
-        .read<PlaybackConfigViewModel>()
-        .addListener(_onPlaybackConfigChanged);
+    _isMuted = ref.read(playbackConfigProvider).muted;
+    _videoPlayerController.setVolume(_isMuted ? 0 : 1);
   }
 
   @override
@@ -89,23 +88,22 @@ class _VideoPostState extends State<VideoPost>
     super.dispose();
   }
 
-  void _onPlaybackConfigChanged() {
-    if (!mounted) return;
-    final muted = context.read<PlaybackConfigViewModel>().muted;
-    if (muted) {
-      _videoPlayerController.setVolume(0);
-    } else {
-      _videoPlayerController.setVolume(1);
-    }
-  }
+  // void _onPlaybackConfigChanged() {
+  //   if (!mounted) return;
+  //   final muted = ref.read(playbackConfigProvider).muted;
+  //   if (muted) {
+  //     _videoPlayerController.setVolume(0);
+  //   } else {
+  //     _videoPlayerController.setVolume(1);
+  //   }
+  // }
 
   void _onVisibilityChanged(VisibilityInfo info) {
     if (!mounted) return;
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
-      final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
-      if (autoplay) {
+      if (ref.read(playbackConfigProvider).autoplay) {
         _videoPlayerController.play();
       }
     }
@@ -170,6 +168,7 @@ class _VideoPostState extends State<VideoPost>
     } else {
       _videoPlayerController.setVolume(0);
     }
+
     setState(() {
       _isMuted = !_isMuted;
     });
