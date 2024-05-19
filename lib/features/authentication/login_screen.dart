@@ -1,28 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/login_form_screen.dart';
-import 'package:tiktok_clone/features/authentication/username_screen.dart';
+import 'package:tiktok_clone/features/authentication/view_models/social_auth_vm.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 import 'package:tiktok_clone/utils.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   static String routeName = "login";
   static String routeURL = "/login";
   const LoginScreen({super.key});
 
   void onSignupTap(BuildContext context) {
     context.pop();
-  }
-
-  void _onEmailTap(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const UsernameScreen(),
-      ),
-    );
   }
 
   void _onEmailLoginTap(BuildContext context) {
@@ -35,7 +28,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       // safearea: 안에 있는 모든 위젯은 특정 공간에 있을 걸 보장
       body: SafeArea(
@@ -69,9 +62,11 @@ class LoginScreen extends StatelessWidget {
                   text: "Use Email & Password"),
               Gaps.v16,
               AuthButton(
-                  buttonFunc: _onEmailTap,
-                  icon: const FaIcon(FontAwesomeIcons.apple),
-                  text: "Continue with Apple"),
+                  buttonFunc: (p0) => ref
+                      .read(socialAuthProvider.notifier)
+                      .githubSignIn(context),
+                  icon: const FaIcon(FontAwesomeIcons.github),
+                  text: "Continue with Github"),
             ],
           ),
         ),

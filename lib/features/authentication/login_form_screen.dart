@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/view_models/login_vm.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
-import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
 
-class LoginFormScreen extends StatefulWidget {
+class LoginFormScreen extends ConsumerStatefulWidget {
   const LoginFormScreen({super.key});
 
   @override
-  State<LoginFormScreen> createState() => _LoginFormScreenState();
+  ConsumerState<LoginFormScreen> createState() => _LoginFormScreenState();
 }
 
-class _LoginFormScreenState extends State<LoginFormScreen> {
+class _LoginFormScreenState extends ConsumerState<LoginFormScreen> {
   // GlobalKey: 고유 식별자의 역할. 폼의 state에 접근 가능하고 폼의 메서드 실행 가능.
   // form + GlobalKey = 엄청나게 간편하게 유효성검사 가능
   // 여러 개의 입력이 필요할 땐 form을 사용하는게 적합한데 이 form의 value를 간편하게 다루기 위해선 GlobalKey를 사용
@@ -21,19 +21,13 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
   Map<String, String> formData = {};
 
   void _onSubmitTap() {
-    // null check 방법1.
-    // if (_formKey.currentState != null) {
-    //   _formKey.currentState!.validate();
-    // }
-
-    // null check 방법2.
-    // _formKey.currentState?.validate();
-
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
-        // 저장된 값마다 함수 돌릴 수 있음
         _formKey.currentState!.save();
-        context.goNamed(InterestsScreen.routeName);
+        ref
+            .read(loginProvider.notifier)
+            .login(formData["email"]!, formData["password"]!, context);
+        // context.goNamed(InterestsScreen.routeName);
       }
     }
   }
@@ -110,8 +104,8 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                   Gaps.v28,
                   GestureDetector(
                     onTap: _onSubmitTap,
-                    child: const FormButton(
-                      disabled: false,
+                    child: FormButton(
+                      disabled: ref.watch(loginProvider).isLoading,
                       text: "Log In",
                     ),
                   ),
