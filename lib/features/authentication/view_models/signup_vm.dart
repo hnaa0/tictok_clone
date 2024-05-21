@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/features/authentication/repos/authentication_repo.dart';
 import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
+import 'package:tiktok_clone/features/users/view_models/users_vm.dart';
 import 'package:tiktok_clone/utils.dart';
 
 // 계정 생성 시 로딩화면을 보여주고 계정생성을 트리거하기만 하는 viewmodel이기 때문에 expose할 필요X
@@ -19,14 +20,21 @@ class SignUpViewModel extends AsyncNotifier<void> {
   Future<void> signUp(BuildContext context) async {
     state = const AsyncValue.loading(); // 로딩중으로 만들고
     final form = ref.read(signUpForm);
+    final users = ref.read(userProvider.notifier);
 
     // guard(): future func을 보내면 try catch로 에러를 잡음
     // 문제가 생기면 state에 에러가 들어오고 없으면 future func 결과 데이터가 들어옴
     state = await AsyncValue.guard(
-      () async => await _authRepo.emailSignUp(
-        form["email"],
-        form["password"],
-      ),
+      () async {
+        // 계정생성을 위해 authrepo 호출하면 emailsignup에서 계정 생성 후 userCredential 리턴
+        final userCredential = await _authRepo.emailSignUp(
+          form["email"],
+          form["password"],
+        );
+
+        // authentication에 계정이 생성되었다면 firesotre에도 프로필 생성
+        await users.createProfile(userCredential);
+      },
     );
 
     if (state.hasError) {

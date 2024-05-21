@@ -11,7 +11,7 @@ class AuthenticationRepository {
 // Stream: 변화를 바로 알 수 있는 ui-백엔드 간의 실시간 연결
   Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
 
-  Future<void> emailSignUp(String email, String password) {
+  Future<UserCredential> emailSignUp(String email, String password) {
     return _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
   }
