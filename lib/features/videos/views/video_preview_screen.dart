@@ -89,6 +89,14 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
   }
 
   @override
+  void dispose() {
+    _videoPlayerController.dispose();
+    _descController.dispose();
+    _titleController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(

@@ -1,1 +1,41 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"tiktokclone-lec-nc","appId":"1:814614352930:android:cce80eec9f1e591391267b","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"tiktokclone-lec-nc","configurations":{"android":"1:814614352930:android:cce80eec9f1e591391267b","ios":"1:814614352930:ios:2afe59533d8dbf0d91267b","web":"1:814614352930:web:75a985646516bb3891267b"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "tiktokclone-lec-nc",
+          "appId": "1:814614352930:android:cce80eec9f1e591391267b",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "tiktokclone-lec-nc",
+          "configurations": {
+            "android": "1:814614352930:android:cce80eec9f1e591391267b",
+            "ios": "1:814614352930:ios:2afe59533d8dbf0d91267b",
+            "macos": "1:814614352930:ios:2afe59533d8dbf0d91267b",
+            "web": "1:814614352930:web:75a985646516bb3891267b",
+            "windows": "1:814614352930:web:430808810e4dc17191267b"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ]
+}

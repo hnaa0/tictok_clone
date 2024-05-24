@@ -39,7 +39,7 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
                 title: title,
                 description: description ?? "",
                 fileUrl: await task.ref.getDownloadURL(),
-                thumnailUrl: "", // cloud function이 썸네일 url 제공하므로 비워두기
+                thumbnailUrl: "", // cloud function이 썸네일 url 제공하므로 비워두기
                 creatorUid: user.uid,
                 creator: userProfile.name,
                 liked: 0,

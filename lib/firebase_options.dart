@@ -25,15 +25,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -71,6 +65,25 @@ class DefaultFirebaseOptions {
     projectId: 'tiktokclone-lec-nc',
     storageBucket: 'tiktokclone-lec-nc.appspot.com',
     iosBundleId: 'com.example.tiktokClone',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyC7u6DQ-tUT0X-VrDejpG5H4OzYBwuDjQE',
+    appId: '1:814614352930:ios:2afe59533d8dbf0d91267b',
+    messagingSenderId: '814614352930',
+    projectId: 'tiktokclone-lec-nc',
+    storageBucket: 'tiktokclone-lec-nc.appspot.com',
+    iosBundleId: 'com.example.tiktokClone',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyDWrn7nXgbqHqZDcd9mv1DqRj05yAUvOR8',
+    appId: '1:814614352930:web:430808810e4dc17191267b',
+    messagingSenderId: '814614352930',
+    projectId: 'tiktokclone-lec-nc',
+    authDomain: 'tiktokclone-lec-nc.firebaseapp.com',
+    storageBucket: 'tiktokclone-lec-nc.appspot.com',
+    measurementId: 'G-RY5NWF3QSD',
   );
 
 }
