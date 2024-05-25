@@ -35,6 +35,28 @@ class VideosRepository {
       return query.startAfter([lastItemCreatedAt]).get();
     }
   }
+
+  Future<void> toggleLikeVideo(String videoId, String userId) async {
+    // 중복 좋아요를 방지하고 firebase 요금 부과를 방지하기 위한 방법
+    final query = _db.collection("likes").doc("${videoId}000$userId");
+    final like = await query.get();
+
+    if (!like.exists) {
+      await query.set({
+        "createdAt": DateTime.now().millisecondsSinceEpoch,
+      });
+    } else {
+      await query.delete();
+    }
+  }
+
+  Future<bool> isLiked(
+      {required String userId, required String videoId}) async {
+    final query = _db.collection("likes").doc("${videoId}000$userId");
+    final like = await query.get();
+
+    return like.exists;
+  }
 }
 
 final videoRepo = Provider((ref) => VideosRepository());
