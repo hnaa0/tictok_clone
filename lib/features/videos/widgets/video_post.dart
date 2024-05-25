@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/models/video_model.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
@@ -21,11 +22,12 @@ class VideoPost extends ConsumerStatefulWidget {
   const VideoPost({
     super.key,
     required this.onVideoFinished,
+    required this.videoData,
     required this.index,
   });
 
   final Function onVideoFinished;
-
+  final VideoModel videoData;
   final int index;
 
   @override
@@ -34,12 +36,11 @@ class VideoPost extends ConsumerStatefulWidget {
 
 class VideoPostState extends ConsumerState<VideoPost>
     with SingleTickerProviderStateMixin {
-  final VideoPlayerController _videoPlayerController =
-      VideoPlayerController.asset("assets/videos/gooroonggooroong.mp4");
+  late final VideoPlayerController _videoPlayerController;
 
   late final AnimationController _animationController;
 
-  bool _isPaused = false;
+  late bool _isPaused;
   bool _isMoreShowed = false;
   late bool _isMuted;
 
@@ -55,6 +56,8 @@ class VideoPostState extends ConsumerState<VideoPost>
   }
 
   void _initVideoPlayer() async {
+    _videoPlayerController =
+        VideoPlayerController.network(widget.videoData.fileUrl);
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
     if (kIsWeb) {
@@ -79,6 +82,7 @@ class VideoPostState extends ConsumerState<VideoPost>
 
     _isMuted = ref.read(playbackConfigProvider).muted;
     _videoPlayerController.setVolume(_isMuted ? 0 : 1);
+    _isPaused = !ref.read(playbackConfigProvider).autoplay;
   }
 
   @override
@@ -184,6 +188,10 @@ class VideoPostState extends ConsumerState<VideoPost>
           Positioned.fill(
             child: _videoPlayerController.value.isInitialized
                 ? VideoPlayer(_videoPlayerController)
+                // : Image.network(
+                //     widget.videoData.thumbnailUrl,
+                //     fit: BoxFit.cover,
+                //   ),
                 : Container(
                     color: Colors.black,
                   ),
@@ -238,9 +246,9 @@ class VideoPostState extends ConsumerState<VideoPost>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "@gnarthecat",
-                  style: TextStyle(
+                Text(
+                  "@${widget.videoData.creator}",
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: Sizes.size20,
                     fontWeight: FontWeight.bold,
@@ -257,7 +265,7 @@ class VideoPostState extends ConsumerState<VideoPost>
                           duration: const Duration(milliseconds: 100),
                           opacity: 1,
                           child: Text(
-                            "gnar goyangi gooroonggooroong laundry babo goyangi gnar goyangi gooroonggooroong laundry babo goyangi",
+                            widget.videoData.description,
                             overflow: _isMoreShowed
                                 ? TextOverflow.visible
                                 : TextOverflow.ellipsis,
@@ -275,13 +283,15 @@ class VideoPostState extends ConsumerState<VideoPost>
                       child: AnimatedOpacity(
                         duration: const Duration(seconds: 0),
                         opacity: _isMoreShowed ? 0 : 1,
-                        child: const Text(
-                          "See more",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: Sizes.size16,
-                          ),
-                        ),
+                        child: widget.videoData.description == ""
+                            ? null
+                            : const Text(
+                                "See more",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: Sizes.size16,
+                                ),
+                              ),
                       ),
                     ),
                   ],
@@ -294,24 +304,24 @@ class VideoPostState extends ConsumerState<VideoPost>
             right: 10,
             child: Column(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 25,
-                  backgroundColor: Colors.lime,
                   foregroundColor: Colors.white,
-                  foregroundImage: AssetImage("assets/images/gnarprofile.jpg"),
-                  child: Text("GNAR"),
+                  foregroundImage: NetworkImage(
+                      "https://firebasestorage.googleapis.com/v0/b/tiktokclone-lec-nc.appspot.com/o/avatar%2F${widget.videoData.creatorUid}?alt=media"),
+                  child: Text(widget.videoData.creator),
                 ),
                 Gaps.v24,
                 VideoButton(
                   icon: FontAwesomeIcons.solidHeart,
-                  text: S.of(context).likeCount(354821),
+                  text: S.of(context).likeCount(widget.videoData.liked),
                 ),
                 Gaps.v24,
                 GestureDetector(
                   onTap: () => _onCommentsTap(context),
                   child: VideoButton(
                     icon: FontAwesomeIcons.solidComment,
-                    text: S.of(context).commentCount(48465),
+                    text: S.of(context).commentCount(widget.videoData.comments),
                   ),
                 ),
                 Gaps.v24,

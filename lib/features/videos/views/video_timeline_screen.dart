@@ -11,7 +11,7 @@ class VideoTimelineScreen extends ConsumerStatefulWidget {
 }
 
 class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
-  int _itemCount = 4;
+  int _itemCount = 0;
 
   // PageController: PageView.builder를 컨트롤할 수 있게 해줌
   final PageController _pageController = PageController();
@@ -24,9 +24,7 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
         duration: _scrollDuration,
         curve: _scrollCurve); // curve: 보여주려는 애니메이션의 종류
     if (page == _itemCount - 1) {
-      _itemCount = _itemCount + 4;
-
-      setState(() {});
+      ref.watch(timelineProvider.notifier).fetchNextPage();
     }
   }
 
@@ -60,24 +58,30 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
               style: const TextStyle(color: Colors.white),
             ),
           ),
-          data: (videos) => RefreshIndicator(
-            displacement: 50, // displacement: 화면을 당긴 다음 indicator의 위치
-            edgeOffset: 20, // edgeOffset: indicator가 시작할 위치
-            color: Theme.of(context).primaryColor,
-            onRefresh: _onRefresh,
-            child: PageView.builder(
-              controller: _pageController,
-              scrollDirection: Axis.vertical, // 스크롤 방향 지정
-              onPageChanged:
-                  _onPageChanged, // 유저가 이동할 때 도착하는 페이지에 대한 정보를 주는 메서드
-              itemCount: videos.length,
-              pageSnapping: true, // 스크롤 위치를 사용자지정으로 할 수 있음
-              itemBuilder: (context, index) => VideoPost(
-                index: index,
-                onVideoFinished: _onVideoFinished,
-              ),
-            ),
-          ),
+          data: (videos) {
+            _itemCount = videos.length;
+            return RefreshIndicator(
+              displacement: 50, // displacement: 화면을 당긴 다음 indicator의 위치
+              edgeOffset: 20, // edgeOffset: indicator가 시작할 위치
+              color: Theme.of(context).primaryColor,
+              onRefresh: _onRefresh,
+              child: PageView.builder(
+                  controller: _pageController,
+                  scrollDirection: Axis.vertical, // 스크롤 방향 지정
+                  onPageChanged:
+                      _onPageChanged, // 유저가 이동할 때 도착하는 페이지에 대한 정보를 주는 메서드
+                  itemCount: videos.length,
+                  pageSnapping: true, // 스크롤 위치를 사용자지정으로 할 수 있음
+                  itemBuilder: (context, index) {
+                    final videoData = videos[index];
+                    return VideoPost(
+                      onVideoFinished: _onVideoFinished,
+                      index: index,
+                      videoData: videoData,
+                    );
+                  }),
+            );
+          },
         );
   }
 }
