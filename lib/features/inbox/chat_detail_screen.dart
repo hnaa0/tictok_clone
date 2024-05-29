@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/repos/authentication_repo.dart';
+import 'package:tiktok_clone/features/inbox/view_models/messages_vm.dart';
 import 'package:tiktok_clone/utils.dart';
 
-class ChatDetailScreen extends StatefulWidget {
+class ChatDetailScreen extends ConsumerStatefulWidget {
   static const String routeName = "chatDetail";
   static const String routeURL = ":chatId";
 
@@ -13,30 +16,11 @@ class ChatDetailScreen extends StatefulWidget {
   const ChatDetailScreen({super.key, required this.chatId});
 
   @override
-  State<ChatDetailScreen> createState() => _ChatDetailScreenState();
+  ConsumerState<ChatDetailScreen> createState() => _ChatDetailScreenState();
 }
 
-class _ChatDetailScreenState extends State<ChatDetailScreen> {
+class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
   final TextEditingController _editingController = TextEditingController();
-
-  final List<Map<String, dynamic>> _chats = [
-    {
-      "mine": false,
-      "text": "hey",
-    },
-    {
-      "mine": false,
-      "text": "love ur video!",
-    },
-    {
-      "mine": true,
-      "text": "❤❤❤❤❤",
-    },
-    {
-      "mine": true,
-      "text": "😘😘😘",
-    },
-  ];
 
   void _onScaffoldTap() {
     FocusScope.of(context).unfocus();
@@ -52,12 +36,16 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
 
   void _onSubmitChat() {
     if (_isWriting) {
-      setState(() {
-        _chats.add({"mine": true, "text": _editingController.text});
-        _editingController.clear();
-        _isWriting = false;
-      });
-      _onScaffoldTap();
+      // setState(() {
+      //   _chats.add({"mine": true, "text": _editingController.text});
+      //   _editingController.clear();
+      //   _isWriting = false;
+      // });
+      // _onScaffoldTap();
+
+      final text = _editingController.text;
+      ref.read(messagesProvider.notifier).sendMessage(text);
+      _editingController.clear();
     }
   }
 
@@ -69,6 +57,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(messagesProvider).isLoading;
     final isDark = isDarkMode(context);
     return GestureDetector(
       onTap: _onScaffoldTap,
@@ -130,49 +119,61 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         ),
         body: Stack(
           children: [
-            ListView.separated(
-              padding: const EdgeInsets.symmetric(
-                vertical: Sizes.size20,
-                horizontal: Sizes.size14,
-              ),
-              itemBuilder: (context, index) {
-                final chat = _chats[index];
+            ref.watch(chatProvider).when(
+                  data: (data) {
+                    return ListView.separated(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: Sizes.size20,
+                        horizontal: Sizes.size14,
+                      ),
+                      itemBuilder: (context, index) {
+                        final chat = data[index];
+                        final isMine =
+                            chat.userId == ref.watch(authRepo).user!.uid;
 
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: chat["mine"]
-                      ? MainAxisAlignment.end
-                      : MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(Sizes.size14),
-                      decoration: BoxDecoration(
-                        color: chat["mine"]
-                            ? Colors.lime
-                            : Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(Sizes.size20),
-                          topRight: const Radius.circular(Sizes.size20),
-                          bottomLeft: Radius.circular(
-                              chat["mine"] ? Sizes.size20 : Sizes.size5),
-                          bottomRight: Radius.circular(
-                              !chat["mine"] ? Sizes.size20 : Sizes.size5),
-                        ),
-                      ),
-                      child: Text(
-                        chat["text"],
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: Sizes.size16,
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-              separatorBuilder: (context, index) => Gaps.v10,
-              itemCount: _chats.length,
-            ),
+                        return Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: isMine
+                              ? MainAxisAlignment.end
+                              : MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(Sizes.size14),
+                              decoration: BoxDecoration(
+                                color: isMine
+                                    ? Colors.lime
+                                    : Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: const Radius.circular(Sizes.size20),
+                                  topRight: const Radius.circular(Sizes.size20),
+                                  bottomLeft: Radius.circular(
+                                      isMine ? Sizes.size20 : Sizes.size5),
+                                  bottomRight: Radius.circular(
+                                      !isMine ? Sizes.size20 : Sizes.size5),
+                                ),
+                              ),
+                              child: Text(
+                                chat.text,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: Sizes.size16,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                      separatorBuilder: (context, index) => Gaps.v10,
+                      itemCount: data.length,
+                    );
+                  },
+                  error: (error, stackTrace) => Center(
+                    child: Text(error.toString()),
+                  ),
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
             Positioned(
               bottom: 0,
               width: MediaQuery.of(context).size.width,
@@ -235,7 +236,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                       ),
                       Gaps.h14,
                       GestureDetector(
-                        onTap: _onSubmitChat,
+                        onTap: isLoading ? null : _onSubmitChat,
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 100),
                           alignment: Alignment.center,
@@ -247,8 +248,10 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                                 : Colors.grey.shade300,
                             shape: BoxShape.circle,
                           ),
-                          child: const FaIcon(
-                            FontAwesomeIcons.paperPlane,
+                          child: FaIcon(
+                            isLoading
+                                ? FontAwesomeIcons.hourglass
+                                : FontAwesomeIcons.paperPlane,
                             color: Colors.white,
                             size: Sizes.size24,
                           ),
