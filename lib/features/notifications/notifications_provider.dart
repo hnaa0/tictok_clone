@@ -14,12 +14,26 @@ class NotificationsProvider extends AsyncNotifier {
     await _db.collection("users").doc(user!.uid).update({"token": token});
   }
 
+  Future<void> initListeners() async {
+    final permission = await _messaging.requestPermission();
+    // 권한을 거부했을 때
+    if (permission.authorizationStatus == AuthorizationStatus.denied) {
+      return;
+    }
+    // 유저가 어플을 열고 있을 때 받는 메세지 (foreground)
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      print("메세지 받았고 foreground");
+      print(event.notification?.title);
+    });
+  }
+
   @override
   FutureOr build() async {
     // token을 사용해서 사용자를 특정할 수 있음.
     final token = await _messaging.getToken();
     if (token == null) return;
     await updateToken(token);
+    await initListeners();
     // token이 바뀌는 경우 대비
     _messaging.onTokenRefresh.listen((newToken) async {
       await updateToken(newToken);
